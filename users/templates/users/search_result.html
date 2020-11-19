@@ -1,0 +1,115 @@
+{% extends "blog/main.html" %}
+{% load static %}
+
+{% block content %}
+ <link rel="stylesheet" type="text/css" href="{% static 'blog/main.css' %}">
+        <link rel="stylesheet" type="text/css" href="{% static 'blog/style.css' %}">
+    <!-- ***** Header Area End ***** -->
+
+    <!-- ********** Hero Area Start ********** -->
+     <div class="hero-area height-700 bg-img background-overlay" style="background-image: url({% static 'img/blog-img/pexels_4.jpg' %});">
+        <div class="container h-100">
+            <div class="row h-100 align-items-center justify-content-center">
+                <div class="col-12 col-md-8 col-lg-6">
+                    <div class="single-blog-title text-center">
+                        <!-- Catagory -->
+
+                                <div class="post-cta"><a href="#">Search</a></div>
+
+                        <h3>Search Page</h3>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- ********** Hero Area End ********** -->
+
+    <section class="contact-area section-padding-100">
+        <div class="container">
+            <div class="row justify-content-center">
+                <!-- Contact Form Area -->
+                <div class="col-12 col-md-10 col-lg-8">
+                    <div class="contact-form">
+                        <h5>Search</h5>
+                        <!-- Contact Form -->
+                        <div class="container">
+                        <div class="form-group">
+                                <form action="{% url 'search' %}" method="post">{% csrf_token %}
+                                <div style="width: 100%" class="search-container">
+                                    <div class="search">
+                                    <input required name="search" type="text" id="zip-code-input" placeholder="Search our website">
+                                    <button type="submit" style="border:0; background: transparent;"><i class="fa fa-search"></i> </button> </a>
+                                </div>
+                                </form>
+                            </div>
+                                <br>
+                        {% if results %}
+                            {% for result in results %}
+                            <div class="search-result-profile">
+                                                        <div
+                                                               style="padding-left: 0px !important;"
+                                                               class="col-8 no-padding d-flex align-items-center">
+                                                           <img
+                                                               class="rounded-circle mr-2"
+                                                               style="width: 40px; height: 40px;"
+                                                               src="{{ result.imageURL }}">
+                                                           <a class="mr-2 white-important" href="{% url 'user-posts' result.author %}">
+                                                               {{ result.author }}
+                                                           </a>
+                                                       </div>
+
+                                                </div>
+                            {% endfor %}
+                        {% else %}
+                            <div class="alert alert-info" role="alert">
+                              No result, please try to search again!
+                            </div>
+                        {% endif %}
+                    </div>
+                    </div>
+                </div>
+                <div class="row">
+                <div class="col-12">
+                    <div class="load-more-btn mt-50 text-center">
+                       <div class="full-width d-flex justify-content-center">
+                {% if is_paginated %}
+                    {% if page_obj.has_previous %}
+                        <a class="btn btn-sm btn-outline-secondary mb-4 mr-2"
+                                href="?page=1">First</a>
+                        <a class="btn btn-sm btn-outline-secondary mb-4 mr-2"
+                                href="?page={{ page_obj.previous_page_number }}">Previous</a>
+                    {% endif %}
+
+                    {% for num in page_obj.paginator.page_range %}
+                        {% if page_obj.number == num %}
+                            <a class="btn btn-sm btn-info mb-4 mr-2"
+                                href="?page={{ num }}">{{ num }}</a>
+                        {% elif num > page_obj.number|add:'-3' and num < page_obj.number|add:'3' %}
+                            <a class="btn btn-sm btn-outline-secondary mb-4 mr-2"
+                                href="?page={{ num }}">{{ num }}</a>
+                        {% endif %}
+                    {% endfor %}
+
+                    {% if page_obj.has_next %}
+                        <a class="btn btn-sm btn-outline-secondary mb-4 mr-2"
+                                href="?page={{ page_obj.next_page_number }}">Next</a>
+                           <a class="btn btn-sm btn-outline-secondary mb-4 mr-2"
+                            href="?page={{ page_obj.paginator.num_pages }}">Last</a>
+                    {% endif %}
+                {% endif %}
+                </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Google Maps: If you want to google map, just uncomment below codes -->
+    <!--
+    <div class="map-area">
+        <div id="googleMap" class="googleMap"></div>
+    </div>
+    -->
+
+ {% endblock %}

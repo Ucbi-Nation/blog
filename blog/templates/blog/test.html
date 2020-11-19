@@ -1,0 +1,1261 @@
+{% extends "blog/main.html" %}
+{% load static %}
+{% block content %}
+{% load crispy_forms_tags %}
+
+        <link rel="stylesheet" type="text/css" href="{% static 'blog/main.css' %}">
+        <link rel="stylesheet" type="text/css" href="{% static 'blog/style.css' %}">
+        <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+
+        <link rel="icon" type="image/png" href="{% static 'blog/logo.png' %}">
+
+
+    <style>
+                    .follow-me {
+    text-decoration: none;
+    font-size: 14px;
+    display: flex;
+    align-items: center;
+    margin-top: auto;
+    overflow: hidden;
+    color: #9c9cab;
+    padding: 0 20px;
+    height: 52px;
+    flex-shrink: 0;
+    border-top: 1px solid #272a3a;
+    position: relative;
+}
+.follow-text {
+    display: flex;
+    align-items: center;
+    transition: 0.3s;
+}
+
+.follow-me {
+    font-size: 14px;
+    color: #9c9cab;
+}
+.follow-me svg {
+    width: 16px;
+    height: 16px;
+    margin-right: 8px;
+}
+.developer {
+    position: absolute;
+    color: #fff;
+    left: 0;
+    top: -100%;
+    display: flex;
+    transition: 0.3s;
+    padding: 0 20px;
+    align-items: center;
+    background-color: #272a3a;
+    width: 100%;
+    height: 100%;
+}
+.developer img {
+    border-radius: 50%;
+    width: 26px;
+    height: 26px;
+    object-fit: cover;
+    margin-right: 10px;
+}
+.follow-me:hover .developer {
+    top: 0;
+}
+                </style>
+    <br>
+<br>
+    <div class="row" style="margin-right: 0px;margin-left: 0px;">
+        <div class="col-12 col-md-4 col-lg-3 pr-4 dont-move">
+            <a href="/"> <h2><img class="img-fluid" width="60" src="{% static 'blog/loc.png' %}"> Profile Tweet</h2></a><br>
+            <div class="profile-section">
+            <h3 class="white-important p-2">
+                Profile
+            </h3>
+
+            <article class="media content-section" style="height: 140px; width: 100%">
+                {%  if user_profile != None %}
+                    <div class="mt-2 d-flex full-width align-items-center">
+                        <img
+                           class="rounded-circle mr-3 img-fluid"
+                           style="width: 90px; height: 90px;"
+                           src="{{ user_profile.profile.image.url }}">
+                        <div>
+                            <h4 style="text-align: left"
+                                    class="white-important">
+                                {{ user_profile.username }}
+                            </h4>
+                            <h6 style="text-align: left"
+                                    class="email-profile">
+                                {{ user.email }}
+                            </h6>
+
+                        </div>
+                    </div>
+                {%  else %}
+                    <div class="mt-2 d-flex full-width align-items-center">
+                        <img
+                           class="rounded-circle mr-3"
+                           style="width: 90px; height: 90px;"
+                           src="{{ user.profile.image.url }}">
+                        <div>
+                            <h4 style="text-align: left"
+                                    class="white-important">
+                                {{ user.username }}
+                            </h4>
+                            <h6 style="text-align: left"
+                                    class="email-profile">
+                                {{ user.email }}
+                            </h6>
+                        </div>
+                    </div>
+                {%  endif %}
+            </article>
+            <article class="media content-section">
+                <div class="row full-width pl-2">
+                    <div class="col-6">
+                            Followers
+                    </div>
+                    <div class="col-6">
+                            Following
+                    </div>
+                    {%  if user_profile != None %}
+                        <div class="col-6">
+                            <h3 class="white-important follow-click">
+                                <a href="{% url 'user-followers' user_profile.username %}">
+                                    <h3 class="white-important follow-click">
+                                    {{ user_profile.profile.followers }}
+                                    </h3>
+                                </a>
+                            </h3>
+                        </div>
+                         <div class="col-6">
+                            <a href="{% url 'user-follows' user_profile.username %}">
+                                <h3 class="white-important follow-click">
+                                    {{ user_profile.profile.following }}
+                                </h3>
+                            </a>
+                        </div>
+                    {% else %}
+                        <div class="col-6">
+                            <a href="{% url 'user-followers' user.username %}">
+                                <h3 class="white-important follow-click">
+                                    {{ user.profile.followers }}
+                                </h3>
+                            </a>
+                        </div>
+
+                        <a href="{% url 'user-follows' user.username %}">
+                            <div class="col-6">
+                                <h3 class="white-important follow-click">
+                                    {{ user.profile.following }}
+                                </h3>
+                            </div>
+                        </a>
+                    {%  endif %}
+                </div>
+            </article>
+
+            <div class="d-flex">
+                {% if user_profile is None %}
+                <div style="margin-left: 40px">
+                    <a class="btn btn-sm btn-outline-primary mb-4 mr-3 " href="{% url 'post-create' %}">
+                        Tweet
+                    </a>
+                </div>
+                {% endif %}
+                {%  if user_profile is not None and user_profile.id != user.id  and user.username != '' %}
+                    <form method="POST">
+                        {% csrf_token %}
+                        <div class="form-group">
+                            <button style="margin-left: 18px" class="btn btn-sm btn-outline-primary"
+                                    name="{% if can_follow %}follow{% else %}unfollow{% endif %}"
+                                    type="submit">
+                                 {% if can_follow %}
+                                     FOLLOW
+                                 {% else %}
+                                     UNFOLLOW
+                                 {% endif %}
+                            </button>
+                        </div>
+                    </form>
+                {% endif %}
+            </div>
+                <a href="https://instagram.com/ucbination" class="follow-me" target="_blank">
+                  <span class="follow-text">
+                    <svg viewBox="0 0 24 24" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round" class="css-i6dzq1"><path d="M23 3a10.9 10.9 0 0 1-3.14 1.53 4.48 4.48 0 0 0-7.86 3v1A10.66 10.66 0 0 1 3 4s-4 9 5 13a11.64 11.64 0 0 1-7 2c9 5 20 0 20-11.5a4.5 4.5 0 0 0-.08-.83A7.72 7.72 0 0 0 23 3z"></path></svg>
+                    Follow me on Twitter
+                 </span>
+                  <span class="developer">
+                    <img src="{{ user.profile.image.url }}">
+                    Aysenur Turk — @Aysnr
+                  </span>
+                </a>
+                <a href="https://instagram.com/ucbination" class="follow-me" target="_blank">
+                  <span class="follow-text">
+                    <svg viewBox="0 0 24 24" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round" class="css-i6dzq1"><path d="M23 3a10.9 10.9 0 0 1-3.14 1.53 4.48 4.48 0 0 0-7.86 3v1A10.66 10.66 0 0 1 3 4s-4 9 5 13a11.64 11.64 0 0 1-7 2c9 5 20 0 20-11.5a4.5 4.5 0 0 0-.08-.83A7.72 7.72 0 0 0 23 3z"></path></svg>
+                    Follow me on Facebook
+                 </span>
+                  <span class="developer">
+                    <img src="{{ user.profile.image.url }}">
+                    Aysenur Turk — @Aysnr
+                  </span>
+                </a>
+            </div>
+            <div class="timeline-left">
+          <div class="intro box" style="margin-top:20px;">
+            <div class="intro-title">
+              Introduction
+              <button class="intro-menu"></button>
+            </div>
+            <div class="info">
+                <div class="info-item">
+                <svg viewBox="0 0 512 512" xmlns="http://www.w3.org/2000/svg" fill="currentColor">
+                  <path d="M437 75C388.7 26.6 324.4 0 256 0S123.3 26.6 75 75C26.6 123.3 0 187.6 0 256s26.6 132.7 75 181c48.3 48.4 112.6 75 181 75s132.7-26.6 181-75c48.4-48.3 75-112.6 75-181s-26.6-132.7-75-181zM252.4 481.9c-52-.9-103.7-19.5-145.2-55.8L256 277.2l21.7 21.8a165.9 165.9 0 00-35.7 87c-3.5 30.5 0 63.3 10.4 95.9zM299 320.3l105.7 105.8a224.8 224.8 0 01-121.3 54.1C262 419.5 268 360.3 299 320.3zm21.2-21.2c40-31 99.2-37 160-15.6A224.8 224.8 0 01426 404.8zM482 252.4a231.7 231.7 0 00-96-10.4 165.9 165.9 0 00-87 35.7L277.3 256l148.9-148.8c36.3 41.5 55 93.2 55.8 145.2zm-290.2-39.5c-40 31-99.2 37-160 15.6A224.8 224.8 0 0186 107.2zm-84.5-127a224.8 224.8 0 01121.3-54.1C250 92.5 244 151.7 213 191.7zM270 126c3.5-30.5 0-63.3-10.4-95.9 52 .9 103.7 19.5 145.2 55.8L256 234.8 234.3 213a165.9 165.9 0 0035.7-87zM30 259.6a242 242 0 0072.7 11.7c7.8 0 15.6-.5 23.2-1.3a165.9 165.9 0 0087-35.7l21.8 21.7L85.9 404.8a225.3 225.3 0 01-55.8-145.2z"></path></svg>
+                Born on <a href="#">{{ user_profile.profile.date_of_birth }} </a> Gender <a href="#">{% if user_profile.profile.gender == 'M' %} Male {% elif user_profile.profile.gender == 'F' %} Female {% endif %}</a>
+              </div>
+              <div class="info-item">
+                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 503.889 503.889" fill="currentColor">
+                  <path d="M453.727 114.266H345.151V70.515c0-20.832-16.948-37.779-37.78-37.779H196.517c-20.832 0-37.78 16.947-37.78 37.779v43.751H50.162C22.502 114.266 0 136.769 0 164.428v256.563c0 27.659 22.502 50.161 50.162 50.161h403.565c27.659 0 50.162-22.502 50.162-50.161V164.428c0-27.659-22.503-50.162-50.162-50.162zm-262.99-43.751a5.786 5.786 0 015.78-5.779h110.854a5.786 5.786 0 015.78 5.779v43.751H190.737zM32 164.428c0-10.015 8.147-18.162 18.162-18.162h403.565c10.014 0 18.162 8.147 18.162 18.162v23.681c0 22.212-14.894 42.061-36.22 48.27l-167.345 48.723a58.482 58.482 0 01-32.76 0L68.22 236.378C46.894 230.169 32 210.321 32 188.109zm421.727 274.725H50.162c-10.014 0-18.162-8.147-18.162-18.161V253.258c8.063 6.232 17.254 10.927 27.274 13.845 184.859 53.822 175.358 52.341 192.67 52.341 17.541 0 7.595 1.544 192.67-52.341 10.021-2.918 19.212-7.613 27.274-13.845v167.733c.001 10.014-8.147 18.162-18.161 18.162z"></path></svg>
+                Product Designer at <a href="#">Bravebist</a>
+              </div>
+              <div class="info-item">
+                <svg xmlns="http://www.w3.org/2000/svg" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" viewBox="0 0 24 24">
+                  <path d="M3 9l9-7 9 7v11a2 2 0 01-2 2H5a2 2 0 01-2-2z"></path>
+                  <path d="M9 22V12h6v10"></path>
+                </svg>
+                Live in <a href="#">{{ user_profile.profile.city }}, {{ user_profile.profile.country }}</a>
+              </div>
+              <div class="info-item">
+                <svg viewBox="0 0 512 512" xmlns="http://www.w3.org/2000/svg" fill="currentColor">
+                  <path d="M437 75C388.7 26.6 324.4 0 256 0S123.3 26.6 75 75C26.6 123.3 0 187.6 0 256s26.6 132.7 75 181c48.3 48.4 112.6 75 181 75s132.7-26.6 181-75c48.4-48.3 75-112.6 75-181s-26.6-132.7-75-181zM252.4 481.9c-52-.9-103.7-19.5-145.2-55.8L256 277.2l21.7 21.8a165.9 165.9 0 00-35.7 87c-3.5 30.5 0 63.3 10.4 95.9zM299 320.3l105.7 105.8a224.8 224.8 0 01-121.3 54.1C262 419.5 268 360.3 299 320.3zm21.2-21.2c40-31 99.2-37 160-15.6A224.8 224.8 0 01426 404.8zM482 252.4a231.7 231.7 0 00-96-10.4 165.9 165.9 0 00-87 35.7L277.3 256l148.9-148.8c36.3 41.5 55 93.2 55.8 145.2zm-290.2-39.5c-40 31-99.2 37-160 15.6A224.8 224.8 0 0186 107.2zm-84.5-127a224.8 224.8 0 01121.3-54.1C250 92.5 244 151.7 213 191.7zM270 126c3.5-30.5 0-63.3-10.4-95.9 52 .9 103.7 19.5 145.2 55.8L256 234.8 234.3 213a165.9 165.9 0 0035.7-87zM30 259.6a242 242 0 0072.7 11.7c7.8 0 15.6-.5 23.2-1.3a165.9 165.9 0 0087-35.7l21.8 21.7L85.9 404.8a225.3 225.3 0 01-55.8-145.2z"></path></svg>
+                Quote <a href="#">{{ user_profile.profile.quote }}</a>
+              </div>
+            </div>
+          </div>
+          <div class="event box">
+            <div class="event-wrapper">
+              <img src="{{ user.profile.image.url }}" class="event-img">
+              <div class="event-date">
+                <div class="event-month">Jan</div>
+                <div class="event-day">01</div>
+              </div>
+              <div class="event-title">Winter Wonderland</div>
+              <div class="event-subtitle">01st Jan, 2019 07:00AM</div>
+            </div>
+          </div>
+          <div class="pages box">
+            <div class="intro-title">
+              Your pages
+              <button class="intro-menu"></button>
+            </div>
+            <div class="user">
+              <img src="{{ user.profile.image.url }}" alt="" class="user-img">
+              <div class="username">Chandelio</div>
+            </div>
+            <div class="user">
+              <img src="{{ user.profile.image.url }}" alt="" class="user-img">
+              <div class="username">Janet Jolie</div>
+            </div>
+            <div class="user">
+              <img src="{{ user.profile.image.url }}" alt="" class="user-img">
+              <div class="username">Patrick Watsons</div>
+            </div>
+          </div>
+        </div>
+        </div>
+        <div class="col-12 col-md-8 col-lg-6 scrollable" >
+            <div class="full-width row">
+                <div class="col-6">
+                    <h3 class="white-important mb-3">
+                        Tweets
+                    </h3>
+                </div>
+                 <div class="col-6 no-padding">
+                    <h6
+                            style="position: absolute; bottom: 0; right: 0"
+                            class="white-important mb-3">
+                        {{ page_obj.start_index }} - {{ page_obj.end_index }} of
+                        {{ paginator.count }}
+                    </h6>
+                </div>
+                <style>
+                .profile::before {
+                    content: "";
+                    width: 100%;
+                    height: 100%;
+                    position: absolute;
+                    z-index: -1;
+                    left: 0;
+                    top: 0;
+                    background-image: url("https://images.unsplash.com/photo-1508247967583-7d982ea01526?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=2250&q=80");
+                    background-repeat: no-repeat;
+                    background-size: cover;
+                    background-position: center;
+                    filter: blur(50px);
+                    opacity: 0.7;
+                }
+                .profile {
+                    position: relative;
+                    height: 40vh;
+                    min-height: 250px;
+                    max-height: 350px;
+                    z-index: 1;
+                }
+                                    .profile-avatar {
+                    position: absolute;
+                    align-items: center;
+                    display: flex;
+                    z-index: 1;
+                    bottom: 16px;
+                    left: 24px;
+                }
+                .profile-img {
+                    width: 150px;
+                    height: 150px;
+                    border-radius: 50%;
+                    object-fit: cover;
+                    border: 3px solid #151728;
+                }
+                .profile-name {
+                    margin-left: 24px;
+                    margin-bottom: 24px;
+                    font-size: 22px;
+                    color: #fff;
+                    font-weight: 600;
+                    font-family: "DM Sans", sans-serif;
+                }
+                .profile-cover {
+                    position: absolute;
+                    top: 0;
+                    left: 0;
+                    width: 100%;
+                    height: 100%;
+                    object-fit: cover;
+                    object-position: center;
+                    border-radius: 4px;
+                }
+                .profile-menu {
+                    position: absolute;
+                    bottom: 0;
+                    padding-left: 200px;
+                    background: #151728;
+                    width: 100%;
+                    display: flex;
+                    border-radius: 0 0 4px 4px;
+                }
+                .profile-menu-link.active, .profile-menu-link:hover {
+                    color: #fff;
+                    background-color: #1b1d2e;
+                    border-bottom: 3px solid #1488fa;
+                }
+                .profile-menu-link {
+                    padding: 20px 16px;
+                    color: #5c5e6e;
+                    transition: 0.3s;
+                    cursor: pointer;
+                }
+                .timeline {
+                    display: flex;
+                    padding-top: 20px;
+                    position: relative;
+                    z-index: 2;
+                }
+                .timeline-left {
+
+                    flex-shrink: 0;
+                }
+                .intro {
+                    padding: 20px;
+                }
+                .box {
+                    background-color: #fff;
+                    border-radius: 4px;
+                }
+                .intro-title {
+                    font-family: "DM Sans", sans-serif;
+                    color: #5c5e6e;
+                    font-weight: 600;
+                    font-size: 18px;
+                    display: flex;
+                    align-items: center;
+                    margin-bottom: 20px;
+                }
+                .intro-menu {
+                    background-color: #8f98a9;
+                    box-shadow: -8px 0 0 0 #8f98a9, 8px 0 0 0 #8f98a9;
+                    width: 5px;
+                    height: 5px;
+                    border: 0;
+                    padding: 0;
+                    border-radius: 50%;
+                    margin-left: auto;
+                    margin-right: 8px;
+                }
+                .info {
+                    font-size: 15px;
+                }
+                .info-item {
+                    display: flex;
+                    color: #c3c5d5;
+                }
+                .info-item svg {
+                    width: 16px;
+                    margin-right: 10px;
+                }
+                .info-item a {
+                    margin-left: 6px;
+                    color: #1771d6;
+                    text-decoration: none;
+                }
+                .event {
+                    position: relative;
+                    margin-top: 20px;
+                    padding: 10px;
+                }
+                .event-wrapper {
+                    position: relative;
+                }
+                .event-img {
+                    max-width: 100%;
+                    display: block;
+                    padding-bottom: 12px;
+                }
+                .event-date {
+                    position: absolute;
+                    left: 20px;
+                    top: 15px;
+                }
+                .event-month {
+                    background-color: #1687fa;
+                    padding: 7px 20px;
+                    font-weight: 600;
+                    font-family: "DM Sans", sans-serif;
+                    color: #fff;
+                    text-align: center;
+                    border-radius: 4px 4px 0 0;
+                }
+                .event-day {
+                    width: 100%;
+                    backdrop-filter: blur(4px);
+                    color: #fff;
+                    font-size: 22px;
+                    font-weight: 600;
+                    font-family: "DM Sans", sans-serif;
+                    background-color: rgba(0, 0, 0, 0.4);
+                    padding: 6px 0;
+                    text-align: center;
+                }.event-title {
+                    color: #c3c5d5;
+                    margin-bottom: 5px;
+                    font-family: "DM Sans", sans-serif;
+                    font-weight: 600;
+                    padding: 0 14px;
+                }
+                .event-subtitle {
+                    color: #5c5e6e;
+                    font-family: "DM Sans", sans-serif;
+                    font-size: 13px;
+                    font-weight: 500;
+                    padding: 0 14px;
+                }
+                .pages {
+                    margin-top: 20px;
+                    padding: 20px;
+                }
+                .user {
+                    display: flex;
+                    align-items: center;
+                    cursor: pointer;
+                }
+                .user-img {
+                    border-radius: 50%;
+                    width: 45px;
+                    height: 45px;
+                    margin-right: 15px;
+                    object-fit: cover;
+                    object-position: center;
+                }
+                .username {
+                    font-size: 15px;
+                    font-family: "DM Sans", sans-serif;
+                }
+                .timeline-right {
+                    flex-grow: 1;
+                    padding-left: 20px;
+                    width:auto;
+                }
+                .status-menu {
+                    padding: 20px;
+                    display: flex;
+                    align-items: center;
+                }
+                .status-menu-item.active, .status-menu-item:hover {
+                    background-color: #2e2e40;
+                    color: #fff;
+                }
+                .status-menu-item {
+                    text-decoration: none;
+                    color: #ccc8db;
+                    padding: 10px 14px;
+                    line-height: 0.7;
+                    font-family: "DM Sans", sans-serif;
+                    font-weight: 500;
+                    border-radius: 20px;
+                }
+                .status-menu-item + .status-menu-item {
+                    margin-left: 10px;
+                }
+                .status-main {
+                    padding: 0 20px;
+                        padding-bottom: 0px;
+                    display: flex;
+                    align-items: center;
+                    border-bottom: 1px solid #272a3a;
+                    padding-bottom: 20px;
+                    flex-wrap: wrap;
+                }
+                .status-img {
+                    width: 50px;
+                    height: 50px;
+                    object-fit: cover;
+                    border-radius: 50%;
+                    margin-right: 20px;
+                }
+                .status-textarea {
+                    flex-grow: 1;
+                    background-color: transparent;
+                    border: none;
+                    resize: none;
+                    margin-top: 15px;
+                    color: #000;
+                    max-width: calc(100% - 70px);
+                }
+                textarea {
+                    overflow: auto;
+                }
+                .status-actions {
+                    display: flex;
+                    padding: 10px 20px;
+                }
+                .status-action {
+                    text-decoration: none;
+                    color: #ccc8db;
+                    margin-right: 20px;
+                    display: flex;
+                    align-items: center;
+                }
+                .status-action svg {
+                    width: 16px;
+                    flex-shrink: 0;
+                    margin-right: 8px;
+                }
+                .status-share {
+                    background-color: #1b86f9;
+                    border: none;
+                    color: #fff;
+                    border-radius: 4px;
+                    padding: 10px 20px;
+                    margin-left: auto;
+                    box-shadow: 0 0 20px #1b86f9;
+                    cursor: pointer;
+                }
+                .album {
+                    padding-top: 20px;
+                    margin-top: 20px;
+                }
+                .album .status-main {
+                    border: none;
+                    display: flex;
+                }
+                .status-main {
+                    padding: 0 20px;
+                        padding-bottom: 0px;
+                    display: flex;
+                    align-items: center;
+                    border-bottom: 1px solid #272a3a;
+                    padding-bottom: 20px;
+                    flex-wrap: wrap;
+                }
+                .album-detail {
+                    width: calc(100% - 110px);
+                }
+                .album-title span {
+                    color: #1771d6;
+                    cursor: pointer;
+                }
+                .album-date {
+                    font-size: 15px;
+                    color: #595c6c;
+                    margin-top: 4px;
+                }
+                .album .intro-menu {
+                    margin-bottom: auto;
+                    margin-top: 5px;
+                }
+                .intro-menu {
+                    background-color: #8f98a9;
+                    box-shadow: -8px 0 0 0 #8f98a9, 8px 0 0 0 #8f98a9;
+                    width: 5px;
+                    height: 5px;
+                    border: 0;
+                    padding: 0;
+                    border-radius: 50%;
+                    margin-left: auto;
+                    margin-right: 8px;
+                }
+                .album-content {
+                    padding: 0 20px 20px;
+                }
+                .album-photos {
+                    display: flex;
+                    margin-top: 20px;
+                    max-height: 30vh;
+                }
+                .album-photos > .album-photo {
+                    width: 50%;
+                }
+                .album-photo {
+                    width: 100%;
+                    object-fit: cover;
+                    object-position: center;
+                    border-radius: 4px;
+                    margin-top: 10px;
+                }
+                .album-right {
+                    width: 50%;
+                    margin-left: 10px;
+                    line-height: 0;
+                    display: flex;
+                    flex-direction: column;
+                }
+                .album-right .album-photo {
+                    height: calc(50% - 10px);
+                }
+                .album-photo {
+                    width: 100%;
+                    object-fit: cover;
+                    object-position: center;
+                    border-radius: 4px;
+                    margin-top: 10px;
+                }
+                .album-right .album-photo {
+                    height: calc(50% - 10px);
+                }
+                .album-photo {
+                    width: 100%;
+                    object-fit: cover;
+                    object-position: center;
+                    border-radius: 4px;
+                    margin-top: 10px;
+                }
+                .album-actions {
+                    padding: 0 20px 20px;
+                }
+                .album-action {
+                    margin-right: 20px;
+                    text-decoration: none;
+                    color: #a2a4b4;
+                    display: inline-flex;
+                    align-items: center;
+                    font-weight: 600;
+                }
+                .album-action svg {
+                    width: 16px;
+                    margin-right: 6px;
+                }
+                svg:not(:root) {
+                    overflow: hidden;
+                }
+                </style>
+
+
+
+            </div>
+
+
+            <br>
+            <div class="profile">
+        <div class="profile-avatar">
+          <img src="{{ user.profile.image.url }}" alt="" class="profile-img">
+          <div class="profile-name">Quan Ha</div>
+        </div>
+        <img src="{{ user.profile.image.url }}" alt="" class="profile-cover">
+        <div class="profile-menu">
+            {% if data == user %}
+          <a class="profile-menu-link active" href="{% url 'profile' %}">Settings</a>
+            <a class="profile-menu-link active" href="{% url 'profile' %}">Followers</a>
+            <a class="profile-menu-link first_chat active" href="{% url 'profile' %}">Following</a>
+            {% else %}
+            <a class="profile-menu-link active" href="/dm/{{ user_profile.username }}">Message</a>
+            <a class="profile-menu-link active" href="{% url 'profile' %}">Followers</a>
+            <a class="profile-menu-link first_chat active" href="{% url 'profile' %}">Following</a>
+            {% endif %}
+        </div>
+      </div>
+            <br>
+<!--<a class="status-menu-item active" href="#">Status</a>
+              <a class="status-menu-item" href="#">Photos</a>
+              <a class="status-menu-item" href="#">Videos</a>-->
+            {% if data == user %}
+          <div class="status box tab">
+            <div class="status-menu box-element hidden" id="payment-info">
+                <a class="tablinks status-menu-item active " onclick="openCity(event, 'status')" id="defaultOpen">Status</a>
+                <a class="tablinks status-menu-item " onclick="openCity(event, 'continue')" >Continue</a>
+                <a class="tablinks status-menu-item " onclick="openCity(event, 'photos')" >Photos</a>
+            </div>
+              {{ form.media }}
+              <form method="POST" class="col-12   no-padding pr-3 pr-md-0"  action="{% url 'create' %}"  enctype="multipart/form-data">
+                  {% csrf_token %}
+            <div class="status-main tabcontent" id="status" >
+              <img src="{{ user.profile.image.url }}" class="status-img">
+                {{ form.title }}
+                <br>
+
+            </div>
+              <div class="status-main tabcontent" id="continue" >
+                {{ form.content }}
+            </div>
+              <div class="status-main tabcontent" id="photos" >
+                  <label class="block uppercase text-gray-700 text-md font-bold mb-2" >
+                {{ form.thumbnail.label }}
+                  </label>
+                  <br>
+                {{ form.thumbnail }}
+                  <br><br>
+                  <label class="block uppercase text-gray-700 text-md font-bold mb-2" style="color:#a5a5a5;" >
+                 {{ form.categories.label }}
+                </label>
+               {{ form.categories }}
+
+                  <br>
+                   <label class="block uppercase text-gray-700 text-md font-bold mb-2" style="color:#a5a5a5;" >
+                 {{ form.tag.label }}
+                </label>
+               {{ form.tag }}
+
+                  <br>
+
+            </div>
+
+            <div class="status-actions">
+              <a href="#" class="status-action">
+                <svg viewBox="-42 0 512 512" xmlns="http://www.w3.org/2000/svg">
+                  <path d="M333.7 123.3c0 33.9-12.2 63.2-36.2 87.2-24 24-53.3 36.1-87.1 36.1h-.1c-33.9 0-63.2-12.1-87.1-36.1-24-24-36.2-53.3-36.2-87.2 0-33.9 12.2-63.2 36.2-87.2 24-24 53.2-36 87-36.1h.2c33.8 0 63.2 12.2 87.1 36.1 24 24 36.2 53.3 36.2 87.2zm0 0" fill="#ffbb85"></path>
+                  <path d="M427.2 424c0 26.7-8.5 48.3-25.3 64.3-16.5 15.7-38.4 23.7-65 23.7H90.2c-26.6 0-48.5-8-65-23.7C8.5 472.3 0 450.7 0 423.9c0-10.2.3-20.4 1-30.2a302.7 302.7 0 0112.1-64.9c3.3-10.3 7.8-20.5 13.4-30.3 5.8-10.2 12.5-19 20.1-26.3a89 89 0 0129-18.2c11.2-4.4 23.7-6.7 37-6.7 5.2 0 10.3 2.2 20 8.5l21 13.5c6.6 4.3 15.7 8.3 27 11.9a107.7 107.7 0 0033 5.3c11 0 22-1.8 33-5.3 11.2-3.6 20.3-7.6 27-12l21-13.4c9.7-6.3 14.7-8.5 20-8.5 13.3 0 25.7 2.3 37 6.7a89 89 0 0128.9 18.2c7.6 7.3 14.4 16.1 20.2 26.3 5.5 9.8 10 20 13.3 30.3a305.5 305.5 0 0112.1 64.9c.7 9.8 1 20 1 30.2zm0 0" fill="#6aa9ff"></path>
+                  <path d="M210.4 246.6h-.1V0c34 0 63.3 12.2 87.2 36.1 24 24 36.2 53.3 36.2 87.2 0 33.9-12.2 63.2-36.2 87.2-24 24-53.3 36.1-87.1 36.1zm0 0" fill="#f5a86c"></path>
+                  <path d="M427.2 424c0 26.7-8.5 48.3-25.3 64.3-16.5 15.7-38.4 23.7-65 23.7H210.2V286.5h3.3c11 0 22-1.8 33-5.3 11.2-3.6 20.3-7.6 27-12l21-13.4c9.7-6.3 14.7-8.5 20-8.5 13.3 0 25.7 2.3 37 6.7a89 89 0 0128.9 18.2c7.6 7.3 14.4 16.1 20.2 26.3 5.5 9.8 10 20 13.3 30.3a305.5 305.5 0 0112.1 64.9c.7 9.8 1 20 1 30.2zm0 0" fill="#2682ff"></path>
+                </svg>
+                People
+              </a>
+              <a href="#" class="status-action">
+                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512">
+                  <path d="M87.084 192c-.456-5.272-.688-10.6-.688-16C86.404 78.8 162.34 0 256.004 0s169.6 78.8 169.6 176c0 5.392-.232 10.728-.688 16h.688c0 96.184-169.6 320-169.6 320s-169.6-223.288-169.6-320h.68zm168.92 32c36.392 1.024 66.744-27.608 67.84-64-1.096-36.392-31.448-65.024-67.84-64-36.392-1.024-66.744 27.608-67.84 64 1.096 36.392 31.448 65.024 67.84 64z" fill="#e21b1b"></path>
+                </svg>
+                Check in
+              </a>
+              <a href="#" class="status-action">
+                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512">
+                  <circle cx="256" cy="256" r="256" fill="#ffca28"></circle>
+                  <g fill="#6d4c41">
+                    <path d="M399.68 208.32c-8.832 0-16-7.168-16-16 0-17.632-14.336-32-32-32s-32 14.368-32 32c0 8.832-7.168 16-16 16s-16-7.168-16-16c0-35.296 28.704-64 64-64s64 28.704 64 64c0 8.864-7.168 16-16 16zM207.68 208.32c-8.832 0-16-7.168-16-16 0-17.632-14.368-32-32-32s-32 14.368-32 32c0 8.832-7.168 16-16 16s-16-7.168-16-16c0-35.296 28.704-64 64-64s64 28.704 64 64c0 8.864-7.168 16-16 16z"></path>
+                  </g>
+                  <path d="M437.696 294.688c-3.04-4-7.744-6.368-12.736-6.368H86.4c-5.024 0-9.728 2.336-12.736 6.336-3.072 4.032-4.032 9.184-2.688 14.016C94.112 390.88 170.08 448.32 255.648 448.32s161.536-57.44 184.672-139.648c1.376-4.832.416-9.984-2.624-13.984z" fill="#fafafa"></path>
+                </svg>
+                Mood
+              </a>
+              <button class="status-share">Share</button>
+            </div>
+              </form>
+          </div>
+            {% endif %}
+
+
+		<script>
+		function openCity(evt, cityName) {
+		  var i, tabcontent, tablinks;
+		  tabcontent = document.getElementsByClassName("tabcontent");
+		  for (i = 0; i < tabcontent.length; i++) {
+			tabcontent[i].style.display = "none";
+		  }
+		  tablinks = document.getElementsByClassName("tablinks");
+		  for (i = 0; i < tablinks.length; i++) {
+			tablinks[i].className = tablinks[i].className.replace(" active", "");
+		  }
+		  document.getElementById(cityName).style.display = "block";
+		  evt.currentTarget.className += " active";
+		}
+
+		// Get the element with id="defaultOpen" and click on it
+		document.getElementById("defaultOpen").click();
+		</script>
+
+
+            {% for post in posts %}
+
+            <div class="album box">
+                <span style="float:right;margin-right:15px;">
+                  {% if post.author == user %}
+                <a class="material-icons ml-2 " style="font-size: 14px; display:inline-block;" href="{% url 'post-delete' post.id %}">clear</a>
+                <a class="material-icons ml-2" style="font-size: 14px; display:inline-block;" href="{% url 'post-update' post.id %}">update</a>
+                  {%  endif %}
+              </span>
+            <div class="status-main">
+
+              <img src="{{ post.author.profile.image.url }}" class="status-img">
+              <div class="album-detail">
+                <span class="album-title"><strong>{{ post.author }}</strong> added a new post to <span>{{post.categories.title}}</span></span>
+                  <br>
+                <span class="album-date">{{ post.date_posted | date:"H:i l, d.m.y" }}</span>
+            </div>
+
+
+
+
+            </div>
+
+                <div class="album-content"><a href="/post/{{post.id}}/{{post.slug}}/"><h5>{{ post.title }}</h5></a>
+              <div class="album-photos">
+                <img src="{{ post.imageURL }}" alt="" class="album-photo">
+                <div class="album-right">
+                  <img src="{{ user.profile.image.url }}" alt="" class="album-photo">
+                  <img src="{{ user.profile.image.url }}" alt="" class="album-photo">
+                </div>
+              </div>
+            </div>
+                <div class="album-content">
+                    <div class="mb-2" style="width: 100%; height: 1px; background-color: rgba(255, 255, 255, 0.1)"></div>
+                    <a style="color: rgba(255, 255, 255, 0.5) !important;" href="/post/{{post.id}}/{{post.slug}}/">
+                    <p class="mb-4">
+                            {{ post.content|safe|linebreaks|truncatechars:500 }}
+                        </p>
+                    </a>
+                </div>
+            <div class="album-actions">
+              <a href="#" class="album-action">
+                <svg stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round" viewBox="0 0 24 24">
+                  <path d="M20.84 4.61a5.5 5.5 0 00-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 00-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 000-7.78z"></path>
+                </svg>
+                {{post.likes}}
+              </a>
+              <a href="#" class="album-action">
+                <svg stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round" class="css-i6dzq1" viewBox="0 0 24 24">
+                  <path d="M21 15a2 2 0 01-2 2H7l-4 4V5a2 2 0 012-2h14a2 2 0 012 2z"></path>
+                </svg>
+                {{ post.number_of_comments }}
+              </a>
+              <a href="#" class="album-action">
+                <span style=" font-size: 16px; margin-top:6px;margin-right:10px;" > <i  class="fa fa-eye" ></i> </span>
+                  <span style="margin-top:5px;">{{post.views}}</span>
+              </a>
+            </div>
+          </div>
+
+
+
+            {% endfor %}
+            <br>
+
+            <div class="full-width d-flex justify-content-center">
+                {% if is_paginated %}
+                    {% if page_obj.has_previous %}
+                        <a class="btn btn-sm btn-outline-secondary mb-4 mr-2"
+                                href="?page=1">First</a>
+                        <a class="btn btn-sm btn-outline-secondary mb-4 mr-2"
+                                href="?page={{ page_obj.previous_page_number }}">Previous</a>
+                    {% endif %}
+
+                    {% for num in page_obj.paginator.page_range %}
+                        {% if page_obj.number == num %}
+                            <a class="btn btn-sm btn-info mb-4 mr-2"
+                                href="?page={{ num }}">{{ num }}</a>
+                        {% elif num > page_obj.number|add:'-3' and num < page_obj.number|add:'3' %}
+                            <a class="btn btn-sm btn-outline-secondary mb-4 mr-2"
+                                href="?page={{ num }}">{{ num }}</a>
+                        {% endif %}
+                    {% endfor %}
+
+                    {% if page_obj.has_next %}
+                        <a class="btn btn-sm btn-outline-secondary mb-4 mr-2"
+                                href="?page={{ page_obj.next_page_number }}">Next</a>
+                           <a class="btn btn-sm btn-outline-secondary mb-4 mr-2"
+                            href="?page={{ page_obj.paginator.num_pages }}">Last</a>
+                    {% endif %}
+                {% endif %}
+            </div>
+        </div>
+        <div class="col-12 col-md-12 col-lg-3 dont-move">
+            <br>
+            <form action="{% url 'search' %}" method="post">{% csrf_token %}
+                <div class="search-container">
+                    <div class="search">
+                    <input required name="search" type="text" id="zip-code-input" placeholder="Search Twitter">
+                    <button type="submit" style="border:0; background: transparent;"><i class="fa fa-search"></i> </button>
+                </div>
+            </div>
+            </form>
+            <br>
+            <br>
+
+
+
+                {%  if user_profile is None %}
+
+                <article class="t-section media content-section">
+
+                    <div class="row ">
+                        <div class="col-12">
+                            <h3>Who to follow</h3>
+                        </div>
+                        <ul class="col-12 mt-2">
+                            {% for user in all_users %}
+                                <li>
+                                    <div class="who-to-follow">
+
+                                        <div
+                                               style="padding-left: 0px !important;"
+                                               class="col-8 no-padding d-flex align-items-center">
+                                           <img
+                                               class="rounded-circle mr-2"
+                                               style="width: 20px; height: 20px;"
+                                               src="{{ user.profile.image.url }}">
+                                           <a class="mr-2 white-important" href="{% url 'user-posts' user.username %}">
+                                               {{ user.username }}
+                                           </a>
+                                       </div>
+                                        <p>{{ user.email }}</p>
+                                    </div>
+                                </li>
+                            {% endfor %}
+                        </ul>
+
+                    </div>
+
+                </article>
+                {% endif %}
+
+
+                        <div class="sidebar_title_container">
+								<div class="sidebar_title">Advertisement</div>
+                                <hr>
+                        </div>
+                        <!-- Single Blog Post -->
+                        <div class="single-blog-post wow fadeInUpBig" data-wow-delay="0.2s">
+                            <!-- Post Thumbnail -->
+                            <div class="post-thumbnail">
+                                <img src="{% static 'img/blog-img/b7.jpg' %}" alt="">
+                                <!-- Catagory -->
+                                <div class="post-cta"><a href="#">travel</a></div>
+                                <!-- Video Button -->
+                                <a href="https://www.youtube.com/watch?v=IhnqEwFSJRg" class="video-btn"><i class="fa fa-play"></i></a>
+                            </div>
+                            <!-- Post Content -->
+                            <div class="post-content">
+                                <a href="#" class="headline">
+                                    <h5>How Did van Gogh’s Turbulent Mind Depict One of the Most Complex Concepts in Physics?</h5>
+                                </a>
+                                <p>How Did van Gogh’s Turbulent Mind Depict One of the Most Complex Concepts in...</p>
+                                <!-- Post Meta -->
+                                <div class="post-meta">
+                                    <p><a href="#" class="post-author">Katy Liu</a> on <a href="#" class="post-date">Sep 29, 2017 at 9:48 am</a></p>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Widget Area -->
+
+                        <div class="sidebar_section">
+							<div class="sidebar_title_container">
+                                <br>
+								<div class="sidebar_title">Popular Posts</div>
+                                <hr>
+								<div class="sidebar_slider_nav">
+									<div class="custom_nav_container sidebar_slider_nav_container">
+										<div class="custom_prev custom_prev_top">
+											<svg version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
+												 width="7px" height="12px" viewBox="0 0 7 12" enable-background="new 0 0 7 12" xml:space="preserve">
+												<polyline fill="#bebebe" points="0,5.61 5.609,0 7,0 7,1.438 2.438,6 7,10.563 7,12 5.609,12 -0.002,6.39 "/>
+											</svg>
+										</div>
+								        <ul id="custom_dots" class="custom_dots custom_dots_top">
+											<li class="custom_dot custom_dot_top active"><span></span></li>
+											<li class="custom_dot custom_dot_top"><span></span></li>
+											<li class="custom_dot custom_dot_top"><span></span></li>
+										</ul>
+										<div class="custom_next custom_next_top">
+											<svg version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
+												 width="7px" height="12px" viewBox="0 0 7 12" enable-background="new 0 0 7 12" xml:space="preserve">
+												<polyline fill="#bebebe" points="6.998,6.39 1.389,12 -0.002,12 -0.002,10.562 4.561,6 -0.002,1.438 -0.002,0 1.389,0 7,5.61 "/>
+											</svg>
+										</div>
+									</div>
+								</div>
+							</div>
+							<div class="sidebar_section_content">
+
+								<!-- Top Stories Slider -->
+								<div class="sidebar_slider_container">
+									<div class="owl-carousel owl-theme sidebar_slider_top">
+
+										<!-- Top Stories Slider Item -->
+										<div class="owl-item">
+
+											<!-- Sidebar Post -->
+                                            {% for post in popular %}
+
+											<div class="side_post">
+												<a href="post.html">
+													<div class="d-flex flex-row align-items-xl-center align-items-start justify-content-start">
+														<div class="side_post_image"><div><img src="{{ post.imageURL }}" alt=""></div></div>
+														<div class="side_post_content">
+                                                            <div class="side_post_title"><a href="/post/{{post.id}}/{{post.slug}}/"> {{post.title}}</a></div>
+															<small class="post_meta">{{ post.author }} <span> <i class="fa fa-eye" style="margin-left:10px; margin-right:4px;" ></i>{{post.views}}</span><span  style="margin-left:10px; margin-right:4px;" >{% if post.likes == 1  %}<i style="color: red; font-size: 16px;" class="far fa-heart"></i>
+                                            {% else %}<i style=" font-size: 16px;" class="far fa-heart"></i>{% endif %} {{post.likes}} like(s)</span><span style="margin-left:10px; margin-right:4px;"><i style=" font-size: 16px;" class="far fa-comment"></i> {{ post.number_of_comments }} comment(s)</span></small>
+
+														</div>
+													</div>
+												</a>
+											</div>
+                                            {% endfor %}
+											<!-- Sidebar Post -->
+											<!-- Sidebar Post -->
+										</div>
+										<!-- Top Stories Slider Item -->
+										<div class="owl-item">
+
+											<!-- Sidebar Post -->
+											 {% for post in popular %}
+											<div class="side_post">
+												<a href="post.html">
+													<div class="d-flex flex-row align-items-xl-center align-items-start justify-content-start">
+														<div class="side_post_image"><div><img src="{{ post.imageURL }}" alt=""></div></div>
+														<div class="side_post_content">
+                                                            <div class="side_post_title"><a href="/post/{{post.id}}/{{post.slug}}/"> {{post.title}}</a></div>
+															<small class="post_meta">{{ post.author }} <span> <i class="fa fa-eye" style="margin-left:10px; margin-right:4px;" ></i>{{post.views}}</span><span  style="margin-left:10px; margin-right:4px;" >{% if post.likes == 1  %}<i style="color: red; font-size: 16px;" class="far fa-heart"></i>
+                                            {% else %}<i style=" font-size: 16px;" class="far fa-heart"></i>{% endif %} {{post.likes}} like(s)</span><span style="margin-left:10px; margin-right:4px;"><i style=" font-size: 16px;" class="far fa-comment"></i> {{ post.number_of_comments }} comment(s)</span></small>
+
+														</div>
+													</div>
+												</a>
+											</div>
+                                            {% endfor %}
+
+										</div>
+
+										<!-- Top Stories Slider Item -->
+										<div class="owl-item">
+
+											<!-- Sidebar Post -->
+											 {% for post in popular %}
+											<div class="side_post">
+												<a href="post.html">
+													<div class="d-flex flex-row align-items-xl-center align-items-start justify-content-start">
+														<div class="side_post_image"><div><img src="{{ post.imageURL }}" alt=""></div></div>
+														<div class="side_post_content">
+                                                            <div class="side_post_title"><a href="/post/{{post.id}}/{{post.slug}}/"> {{post.title}}</a></div>
+															<small class="post_meta">{{ post.author }} <span> <i class="fa fa-eye" style="margin-left:10px; margin-right:4px;" ></i>{{post.views}}</span><span  style="margin-left:10px; margin-right:4px;" >{% if post.likes == 1  %}<i style="color: red; font-size: 16px;" class="far fa-heart"></i>
+                                            {% else %}<i style=" font-size: 16px;" class="far fa-heart"></i>{% endif %} {{post.likes}} like(s)</span><span style="margin-left:10px; margin-right:4px;"><i style=" font-size: 16px;" class="far fa-comment"></i> {{ post.number_of_comments }} comment(s)</span></small>
+
+														</div>
+													</div>
+												</a>
+											</div>
+                                            {% endfor %}
+
+
+										</div>
+
+									</div>
+								</div>
+							</div>
+						</div>
+
+
+						<!-- Advertising 2 -->
+
+								<div class="sidebar_section_content">
+
+											<!-- Top Stories Slider -->
+											<div class="sidebar_slider_container">
+
+							<article class="t-section media content-section">
+
+								<div class="row ">
+									<div class="col-12">
+										<div class="sidebar_title_container">
+								<div class="sidebar_title">Who to follow</div>
+                                <hr>
+                        </div>
+									</div>
+									<ul class="col-12 mt-2">
+										{% for user in all_user %}
+
+													<div class="owl-item">
+														<div class="side_post">
+															<a href="{% url 'user' user.user.username %}">
+																<div class="d-flex flex-row align-items-xl-center align-items-start justify-content-start">
+																	<div class="event_date d-flex flex-column align-items-center justify-content-center">
+																		<img class="rounded-circle mr-2" style="width: 50px; height: 50px;" src="{{ user.image.url }}">
+																	</div>
+																	<div class="side_post_content">
+																		<div class="side_post_title">{{ user.user.username }}</div>
+																		<small class="post_meta">{{ user.followers }} Followers<span> {{ user.following }} Following</span></small>
+																		<small class="post_meta">{{ user.likes }} Likes<span> {{ user.comments }} Comments</span></small>
+																	</div>
+																</div>
+															</a>
+														</div>
+													</div>
+										<br>
+										{% endfor %}
+									</ul>
+
+								</div>
+
+							</article>
+
+												</div></div>
+
+
+						<!-- Future Events -->
+                        <div class="sidebar_section future_events">
+							<div class="sidebar_title_container">
+								<div class="sidebar_title">Future Events</div>
+								<div class="sidebar_slider_nav">
+									<div class="custom_nav_container sidebar_slider_nav_container">
+										<div class="custom_prev custom_prev_events">
+											<svg version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
+												 width="7px" height="12px" viewBox="0 0 7 12" enable-background="new 0 0 7 12" xml:space="preserve">
+												<polyline fill="#bebebe" points="0,5.61 5.609,0 7,0 7,1.438 2.438,6 7,10.563 7,12 5.609,12 -0.002,6.39 "/>
+											</svg>
+										</div>
+								        <ul id="custom_dots" class="custom_dots custom_dots_events">
+											<li class="custom_dot custom_dot_events active"><span></span></li>
+											<li class="custom_dot custom_dot_events"><span></span></li>
+											<li class="custom_dot custom_dot_events"><span></span></li>
+										</ul>
+										<div class="custom_next custom_next_events">
+											<svg version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
+												 width="7px" height="12px" viewBox="0 0 7 12" enable-background="new 0 0 7 12" xml:space="preserve">
+												<polyline fill="#bebebe" points="6.998,6.39 1.389,12 -0.002,12 -0.002,10.562 4.561,6 -0.002,1.438 -0.002,0 1.389,0 7,5.61 "/>
+											</svg>
+										</div>
+									</div>
+								</div>
+							</div>
+							<div class="sidebar_section_content">
+
+								<!-- Sidebar Slider -->
+								<div class="sidebar_slider_container">
+									<div class="owl-carousel owl-theme sidebar_slider_events">
+
+										<!-- Future Events Slider Item -->
+										<div class="owl-item">
+
+											<!-- Future Events Post -->
+
+
+											<!-- Future Events Post -->
+											<div class="side_post">
+												<a href="post.html">
+													<div class="d-flex flex-row align-items-xl-center align-items-start justify-content-start">
+														<div class="event_date d-flex flex-column align-items-center justify-content-center">
+															<div class="event_day">27</div>
+															<div class="event_month">apr</div>
+														</div>
+														<div class="side_post_content">
+															<div class="side_post_title">How Did van Gogh’s Turbulent Mind</div>
+															<small class="post_meta">Katy Liu<span>Sep 29</span></small>
+														</div>
+													</div>
+												</a>
+											</div>
+										</div>
+
+										<!-- Future Events Slider Item -->
+										<div class="owl-item">
+											<!-- Future Events Post -->
+											<div class="side_post">
+												<a href="post.html">
+													<div class="d-flex flex-row align-items-xl-center align-items-start justify-content-start">
+														<div class="event_date d-flex flex-column align-items-center justify-content-center">
+															<div class="event_day">02</div>
+															<div class="event_month">may</div>
+														</div>
+														<div class="side_post_content">
+															<div class="side_post_title">How Did van Gogh’s Turbulent Mind</div>
+															<small class="post_meta">Katy Liu<span>Sep 29</span></small>
+														</div>
+													</div>
+												</a>
+											</div>
+											<!-- Future Events Post -->
+
+										</div>
+										<!-- Future Events Slider Item -->
+										<div class="owl-item">
+											<!-- Future Events Post -->
+											<div class="side_post">
+												<a href="post.html">
+													<div class="d-flex flex-row align-items-xl-center align-items-start justify-content-start">
+														<div class="event_date d-flex flex-column align-items-center justify-content-center">
+															<div class="event_day">02</div>
+															<div class="event_month">may</div>
+														</div>
+														<div class="side_post_content">
+															<div class="side_post_title">How Did van Gogh’s Turbulent Mind</div>
+															<small class="post_meta">Katy Liu<span>Sep 29</span></small>
+														</div>
+													</div>
+												</a>
+											</div>
+
+											<!-- Future Events Post -->
+
+
+										</div>
+
+									</div>
+								</div>
+							</div>
+                            <div class="sidebar-widget-area">
+                            <h5 class="titl">Stay Connected</h5>
+                            <div class="widget-content">
+                                <div class="social-area d-flex justify-content-between">
+                                    <a href="#"><i class="fa fa-facebook"></i></a>
+                                    <a href="#"><i class="fa fa-twitter"></i></a>
+                                    <a href="#"><i class="fa fa-pinterest"></i></a>
+                                    <a href="#"><i class="fa fa-vimeo"></i></a>
+                                    <a href="#"><i class="fa fa-instagram"></i></a>
+                                    <a href="#"><i class="fa fa-google"></i></a>
+                                </div>
+                            </div>
+                        </div>
+                        <br>
+                        <br>
+                         <p><a href="">Terms</a>,
+                        <a href="">Privacy policy</a>,
+                        <a href="">Cookies</a>,
+                        <a href="">Ads info</a>,
+                        <a href="">More</a>
+                        © 2020 UcbiNation, Inc.</p>
+						</div>
+
+
+
+                        <!-- Widget Area -->
+
+                        <!-- Widget Area -->
+
+
+
+
+
+
+        </div>
+    </div>
+
+
+
+{% endblock content %}

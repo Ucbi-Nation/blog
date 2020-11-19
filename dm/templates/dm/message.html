@@ -1,0 +1,134 @@
+{% load static %}
+{% load crispy_forms_tags %}
+<!doctype html>
+<html class="no-js" lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="x-ua-compatible" content="ie=edge">
+    <title>Dashboard v.1.0 | Adminpro - Admin Template</title>
+    <meta name="description" content="">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+
+
+    <link rel="stylesheet" href="{% static 'blog/bootstrap.min1.css' %}">
+
+    <link rel="stylesheet" href="{% static 'blog/font-awesome.min.css' %}">
+    <link rel="stylesheet" href="{% static 'blog/jquery.mCustomScrollbar.min.css' %}">
+
+    <link rel="stylesheet" href="{% static 'blog/animate.css' %}">
+
+    <link rel="stylesheet" href="{% static 'blog/style_msg.css' %}">
+
+<style>
+    #message-container {
+        height: 200px !important;
+        overflow-y: scroll;
+    }
+    .chat-send{
+    margin-bottom:50px;
+    }
+</style>
+</head>
+
+<body class="materialdesign">
+
+
+
+
+
+
+    <div class="chat-list-wrap">
+        <div class="chat-list-adminpro">
+            <div class="chat-button">
+                <span data-toggle="collapse" data-target="#chat" class="chat-icon-link"><i class="fa fa-comments"></i></span>
+            </div>
+            <div id="chat" class="collapse chat-box-wrap shadow-reset animated zoomInLeft">
+                <div class="chat-main-list">
+                    <div class="chat-heading">
+                        <h2>Messanger</h2>
+                    </div>
+                    <div class="chat-content chat-scrollbar" style="margin-bottom:-30px; z-index:999;">
+                        {% for message in object.channelmessage_set.all %}
+                        {% if request.user == message.user %}
+                        <div class="client-chat">
+                            <h3><span class="chat-date">{{ message.timestamp.time }}</span> {{ message.user }} </h3>
+                            <p>{{ message.content }}</p>
+                        </div>
+                        {% else %}
+                        <div class="author-chat">
+                            <h3>{{ message.user }}<span class="chat-date">{{ message.timestamp.time }}</span></h3>
+                            <p>{{ message.content }}</p>
+                        </div>
+                        {% endif %}
+                        {% endfor %}
+                    </div>
+
+                        <form id='message-form' action="{{ request.path }}" method='POST'> {% csrf_token %}
+                        {{ form.as_p }}
+                            <input type='submit' style="" value='Message' />
+                    </form>
+
+                </div>
+            </div>
+        </div>
+    </div>
+
+<script>
+    // async javascript request
+    const msgForm = document.getElementById("message-form")
+    const msgContainer = document.getElementById("message-container")
+
+    function scrollBottom (el){
+        el.scrollTop = el.scrollHeight
+    }
+    scrollBottom(msgContainer)
+
+    msgForm.addEventListener("submit", (event)=>{
+        event.preventDefault()
+        const targetData = event.target
+        const formData = new FormData(targetData)
+        const xhr = new XMLHttpRequest() // fetch
+        const endpoint = msgForm.getAttribute("action")
+        const method = msgForm.getAttribute("method")
+        xhr.open(method, endpoint)
+        //
+        xhr.responseType = 'json'
+        xhr.setRequestHeader("HTTP_X_REQUESTED_WITH", "XMLHttpRequest")
+        xhr.setRequestHeader("X-Requested-With", "XMLHttpRequest")
+        xhr.onload = () => {
+            // const myJsonResponse = JSON.parse(xhr.response)
+            // console.log(xhr.status, xhr.response)
+            if (xhr.status === 201) {
+                const responseData = xhr.response
+                let currentMsgHtml = msgContainer.innerHTML
+                currentMsgHtml += `<div class='my-3 w-35 px-1 rounded mr-0 bg-primary text-white'><b>${responseData.username}</b><p>${responseData.content}</p></div>`
+                msgContainer.innerHTML = currentMsgHtml
+                scrollBottom(msgContainer)
+                msgForm.reset()
+            } else if (xhr.status === 400) {
+                console.log(xhr.response)
+            } else {
+                alert("An error occurred. Please try again later.")
+            }
+        }
+
+        xhr.send(formData)
+    })
+</script>
+    <!-- Chat Box End-->
+
+    <script src="{% static 'jquery-1.11.3.min.js' %}"></script>
+
+    <script src="{% static 'bootstrap.min.js' %}"></script>
+
+    <script src="{% static 'jquery.meanmenu.js' %}"></script>
+
+    <script src="{% static 'jquery.mCustomScrollbar.concat.min.js' %}"></script>
+
+    <script src="{% static 'jquery.sticky.js' %}"></script>
+    <script src="{% static 'main.js' %}"></script>
+</body>
+
+</html>

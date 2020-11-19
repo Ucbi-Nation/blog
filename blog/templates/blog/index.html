@@ -1,0 +1,579 @@
+{% extends "blog/main.html" %}
+{% load static %}
+{% block content %}
+
+ <!-- ********** Hero Area Start ********** -->
+<style>
+						@media only screen and (max-width: 512px) {
+        .last {
+          display:none; } }
+					</style>
+
+    <div class="hero-area">
+
+
+
+        <!-- Hero Post Slide -->
+        <div class="hero-post-area ">
+            <div class="container">
+                <div class="row">
+                    <div class="col-12">
+                        <div class="hero-post-slide">
+							<div class="single-slide d-flex align-items-center">
+                                <div class="post-number">
+                                    <p><i class="fa fa-search"></i></p>
+                                </div>
+                                <div class="post-title">
+									<div id="search-wrapper" style="float:left">
+                                <form action="{% url 'search' %}" method="post"  class="search_margin" >{% csrf_token %}
+                                    <input required name="search"  type="text" id="search" placeholder="Search something...">
+                                    <div id="close-icon" ></div>
+                                    <input class="d-none" type="submit" value="">
+                                </form>
+                            </div>
+                                </div>
+                            </div>
+
+                            <!-- Single Slide -->
+                            {% for post in tag  %}
+
+
+                            <div class="single-slide d-flex align-items-center">
+                                <div class="post-number">
+                                    <p>{{forloop.counter}}</p>
+                                </div>
+                                <div class="post-title">
+                                    <a href="single-blog.html">{{post.title}}</a>
+                                </div>
+                            </div>
+                            <!-- Single Slide -->
+
+
+
+                            {% endfor %}
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+
+ <div class="container" style="padding:0px;max-width:90%">
+
+       <div class="row">
+				<div class=" col-12 post-img-height" style="padding-left:0px; padding-right:0px; padding:no-padding;   margin-right: 0px; important;">
+					<!-- post -->
+					<div class="post post-thumb ">
+						<a class="post-img post-img-first" href="blog-post.html"><img src="{% static '/img/blog-img/pexels.jpg' %}" style="width:100%" alt=""></a>
+						<div class="post-body">
+							<div class="post-ctaa"><a href="#">Category</a></div>
+
+							<h3 class="post-title title-lg tit"><a href="blog-post.html">Postea senserit id eos, vivendo periculis ei qui</a></h3>
+							<ul class="post-meta">
+								<li class="tit_author" style="display: inline-block;"> John Doe </li>
+								<li style="display: inline-block;" class="tit_date">20 April 2018</li>
+								<li  style="display: inline-block; margin-left:10px; margin-right:4px;" >{% if post.likes == 1  %}<i style="color: red; font-size: 16px;" class="far fa-heart"></i>
+                                            {% else %}<i style=" font-size: 16px;" class="far fa-heart"></i>{% endif %} {{post.likes}} like(s)</li>
+								<li style="margin-left:10px; margin-right:4px; display: inline-block;"><i style=" font-size: 16px;" class="far fa-comment"></i> {{ post.number_of_comments }} comment(s)</li>
+							</ul>
+						</div>
+					</div>
+
+				</div>
+
+
+
+				<div class=" col-6 height-500 " style="padding-left:0px; padding-right:0px; padding:no-padding; margin-right: 0px; important;">
+					<!-- post -->
+					<div class="post post-thumb">
+						<a class="post-img" href="blog-post.html"><img src="{% static '/img/blog-img/pexels2.jpg' %}" style="width:100%"   alt=""></a>
+						<div class="post-body">
+							<div class="post-ctaa cta1"   style="top:20px;margin-bottom:10px; "><a href="#">Category</a></div>
+							<h3 class="post-title title-lg tit"><a href="blog-post.html">Postea senserit id eos, vivendo periculis ei qui</a></h3>
+							<ul class="post-meta">
+								<li class="tit_author" style="display: inline-block;"> John Doe </li>
+								<li style="display: inline-block;" class="tit_date">20 April 2018</li>
+							 </ul>
+							<div class="like_under">
+								<span style="display: inline-block;">{% if post.likes == 1  %}<i style="color: red; font-size: 16px;" class="far fa-heart"></i>
+                                            {% else %}<i style=" font-size: 16px;" class="far fa-heart"></i>{% endif %} {{post.likes}} like(s)</span>
+								<span style="display: inline-block;"><i style=" font-size: 16px;" class="far fa-comment"></i> {{ post.number_of_comments }} comment(s)</span>
+							</div>
+						</div>
+					</div>
+					<!-- /post -->
+				</div>
+				<div class=" col-6 height-500 " style="padding-left:0px; padding-right:0px; padding:no-padding; margin-right: 0px; important;">
+					<!-- post -->
+					<div class="post post-thumb">
+						<a class="post-img" href="blog-post.html"><img src="{% static '/img/blog-img/pexels_4.jpg' %}" style="width:100%" alt=""></a>
+						<div class="post-body">
+							<div class="post-ctaa cta1"   style="top:20px;margin-bottom:10px; "><a href="#">Category</a></div>
+							<h3 class="post-title title-lg tit"><a href="blog-post.html">Postea senserit id eos, vivendo periculis ei qui</a></h3>
+							<ul class="post-meta">
+								<li style="display: inline-block;"> John Doe </li>
+								<li style="display: inline-block;" class="tit_date">20 April 2018</li>
+
+								</ul>
+							<div class="like_under">
+								<span style="display: inline-block;">{% if post.likes == 1  %}<i style="color: red; font-size: 16px;" class="far fa-heart"></i>
+                                            {% else %}<i style=" font-size: 16px;" class="far fa-heart"></i>{% endif %} {{post.likes}} like(s)</span>
+								<span style="display: inline-block;"><i style=" font-size: 16px;" class="far fa-comment"></i> {{ post.number_of_comments }} comment(s)</span>
+							</div>
+						</div>
+					</div>
+					<!-- /post -->
+				</div>
+		 </div>
+ </div>
+
+
+
+
+    <div class="main-content-wrapper" style="margin-top:-300px;">
+        <div class="container">
+			<br>
+			<br>
+            <div class="world-latest-articles"  style="">
+                <div class="row">
+                    <div class="col-12 col-lg-8">
+                        <div class="title">
+                            <h5>Latest Articles</h5>
+                    <h6 style="position: absolute; bottom: 0; right: 0" class="white-important mb-3">
+                        {{ page_obj.start_index }} - {{ page_obj.end_index }} of
+                        {{ paginator.count }}
+                    </h6>
+
+                        </div>
+
+
+                        {% for post in posts %}
+
+                        <!-- Single Blog Post -->
+                        <div class="single-blog-post post-style-4 d-flex align-items-center wow fadeInUpBig" data-wow-delay="0.5s">
+                            <!-- Post Thumbnail -->
+                            <div class=" post-thumbnail">
+                                <img src="{{ post.imageURL }}" alt="">
+								<div class="post-cta"><a href="#">{{post.categories.title}}</a></div>
+                                {% for cat in post.categories.all %}
+                                <div class="post-cta"><a href="#">sfddscs</a></div>
+                                {% endfor %}
+                            </div>
+                            <!-- Post Content -->
+                            <div class=" post-content">
+                                <a href="/post/{{post.id}}/{{post.slug}}/" class="headline">
+                                    <h5>{{ post.title|truncatechars:20 }}</h5>
+                                </a>
+                                <p>{{ post.content|safe|linebreaks|truncatechars:100}}</p>
+                                <!-- Post Meta -->
+                                <div class="post-meta">
+                                    <div class="pb-2 row m-0" style="width: 100%; margin-right: 0 !important;">
+                                    <span class="col-10 no-padding d-flex align-items-center">
+                           <img class="rounded-circle mr-2" style="width: 20px; height: 20px;"
+                               src="{{ post.author.profile.image.url }}">
+                           <p class="mr-2 white-important"><a  href="{% url 'user-posts' post.author %}">{{ post.author }}
+                           </a> at <a href="#" class="post-date">{{ post.date_posted | date:"H:i l, d.m.y" }}</a></p>
+                               </span>
+                                 <div class="col-4 d-flex flex-row-reverse no-padding align-items-center"
+                            style="padding-right: 0 !important;">
+                           {% if post.author == user %}
+                                <a class="material-icons ml-2"
+                                   style="font-size: 14px"
+                                        href="{% url 'post-delete' post.id %}">clear</a>
+                                <a class="material-icons ml-2"
+                                   style="font-size: 14px"
+                                        href="{% url 'post-update' post.id %}">update</a>
+                            {%  endif %}
+                       </div>
+                                    </div>
+                                </div>
+                                <div class="col-12" style="display: inline-block;">
+                                <small style="opacity: 0.4;display: inline-block;">
+
+                                    <!-- Like Buttons Here -->
+                                    <a href="#" onClick="document.getElementById('likebutton{{post.id}}').submit()">
+                                            {% if post.likes == 1  %}
+                                            <i style="color: red; font-size: 16px;" class="far fa-heart"></i>
+                                            {% else %}
+                                            <i style=" font-size: 16px;" class="far fa-heart"></i>
+                                            {% endif %}
+
+                                             {{post.likes}} like(s)
+
+                                    </a>
+
+                                    <form id="likebutton{{post.id}}" method="POST" action="{% url 'postpreference' post.id 1%}">
+                                    {% csrf_token %}
+                                    <input type="hidden">
+                                    </form>
+
+
+                                </small>
+
+                                <small style="opacity: 0.4; margin-left:15px; display: inline-block;">
+                                    <span style=" font-size: 14px;"> <i class="fa fa-eye" style="margin-left:10px; margin-right:4px;" ></i>{{post.views}}</span>
+
+                                </small>
+									<small style="opacity: 0.4; margin-left:15px; display: inline-block;">
+                                    <a href="/post/{{post.id}}/">
+                                        <i style=" font-size: 16px;" class="far fa-comment"></i> {{ post.number_of_comments }} comment(s)
+                                    </a>
+
+                                </small>
+
+                            </div>
+                            </div>
+                        </div>
+                    {% endfor %}
+                        <div class="row">
+                <div class="col-12">
+                    <div class="load-more-btn mt-50 text-center">
+                       <div class="full-width d-flex justify-content-center">
+                {% if is_paginated %}
+                    {% if page_obj.has_previous %}
+                        <a class="btn btn-sm btn-outline-secondary mb-4 mr-2"
+                                href="?page=1">First</a>
+                        <a class="btn btn-sm btn-outline-secondary mb-4 mr-2"
+                                href="?page={{ page_obj.previous_page_number }}">Previous</a>
+                    {% endif %}
+
+                    {% for num in page_obj.paginator.page_range %}
+                        {% if page_obj.number == num %}
+                            <a class="btn btn-sm btn-info mb-4 mr-2"
+                                href="?page={{ num }}">{{ num }}</a>
+                        {% elif num > page_obj.number|add:'-3' and num < page_obj.number|add:'3' %}
+                            <a class="btn btn-sm btn-outline-secondary mb-4 mr-2"
+                                href="?page={{ num }}">{{ num }}</a>
+                        {% endif %}
+                    {% endfor %}
+
+                    {% if page_obj.has_next %}
+                        <a class="btn btn-sm btn-outline-secondary mb-4 mr-2"
+                                href="?page={{ page_obj.next_page_number }}">Next</a>
+                           <a class="btn btn-sm btn-outline-secondary mb-4 mr-2"
+                            href="?page={{ page_obj.paginator.num_pages }}">Last</a>
+                    {% endif %}
+                {% endif %}
+                </div>
+                        </div>
+                    </div>
+                </div>
+
+
+                    </div>
+
+                    <div class="col-12 col-lg-4">
+                        <div class="title">
+                            <h5>Advertisement</h5>
+                        </div>
+                        <!-- Single Blog Post -->
+                        <div class="single-blog-post wow fadeInUpBig" data-wow-delay="0.2s">
+                            <!-- Post Thumbnail -->
+                            <div class="post-thumbnail">
+                                <img src="{% static 'img/blog-img/b7.jpg' %}" alt="">
+                                <!-- Catagory -->
+                                <div class="post-cta"><a href="#">travel</a></div>
+                                <!-- Video Button -->
+                                <a href="https://www.youtube.com/watch?v=IhnqEwFSJRg" class="video-btn"><i class="fa fa-play"></i></a>
+                            </div>
+                            <!-- Post Content -->
+                            <div class="post-content">
+                                <a href="#" class="headline">
+                                    <h5>How Did van Gogh’s Turbulent Mind Depict One of the Most Complex Concepts in Physics?</h5>
+                                </a>
+                                <p>How Did van Gogh’s Turbulent Mind Depict One of the Most Complex Concepts in...</p>
+                                <!-- Post Meta -->
+                                <div class="post-meta">
+                                    <p><a href="#" class="post-author">Katy Liu</a> on <a href="#" class="post-date">Sep 29, 2017 at 9:48 am</a></p>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Widget Area -->
+
+                        <div class="sidebar_section">
+							<div class="sidebar_title_container">
+								<div class="sidebar_title">Popular Posts</div>
+                                <hr>
+								<div class="sidebar_slider_nav">
+									<div class="custom_nav_container sidebar_slider_nav_container">
+										<div class="custom_prev custom_prev_top">
+											<svg version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
+												 width="7px" height="12px" viewBox="0 0 7 12" enable-background="new 0 0 7 12" xml:space="preserve">
+												<polyline fill="#bebebe" points="0,5.61 5.609,0 7,0 7,1.438 2.438,6 7,10.563 7,12 5.609,12 -0.002,6.39 "/>
+											</svg>
+										</div>
+								        <ul id="custom_dots" class="custom_dots custom_dots_top">
+											<li class="custom_dot custom_dot_top active"><span></span></li>
+											<li class="custom_dot custom_dot_top"><span></span></li>
+											<li class="custom_dot custom_dot_top"><span></span></li>
+										</ul>
+										<div class="custom_next custom_next_top">
+											<svg version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
+												 width="7px" height="12px" viewBox="0 0 7 12" enable-background="new 0 0 7 12" xml:space="preserve">
+												<polyline fill="#bebebe" points="6.998,6.39 1.389,12 -0.002,12 -0.002,10.562 4.561,6 -0.002,1.438 -0.002,0 1.389,0 7,5.61 "/>
+											</svg>
+										</div>
+									</div>
+								</div>
+							</div>
+							<div class="sidebar_section_content">
+
+								<!-- Top Stories Slider -->
+								<div class="sidebar_slider_container">
+									<div class="owl-carousel owl-theme sidebar_slider_top">
+
+										<!-- Top Stories Slider Item -->
+										<div class="owl-item">
+
+											<!-- Sidebar Post -->
+                                            {% for post in popular %}
+
+											<div class="side_post">
+												<a href="post.html">
+													<div class="d-flex flex-row align-items-xl-center align-items-start justify-content-start">
+														<div class="side_post_image"><div><img src="{{ post.imageURL }}" alt=""></div></div>
+														<div class="side_post_content">
+															<div class="side_post_title"><a href="/post/{{post.id}}/{{post.slug}}/">{{post.title}}</a></div>
+															<small class="post_meta">{{ post.author }} <span> <i class="fa fa-eye" style="margin-left:10px; margin-right:4px;" ></i>{{post.views}}</span><span  style="margin-left:10px; margin-right:4px;" >{% if post.likes == 1  %}<i style="color: red; font-size: 16px;" class="far fa-heart"></i>
+                                            {% else %}<i style=" font-size: 16px;" class="far fa-heart"></i>{% endif %} {{post.likes}} like(s)</span><span style="margin-left:10px; margin-right:4px;"><i style=" font-size: 16px;" class="far fa-comment"></i> {{ post.number_of_comments }} comment(s)</span></small>
+
+														</div>
+													</div>
+												</a>
+											</div>
+
+                                            {% endfor %}
+											<!-- Sidebar Post -->
+											<!-- Sidebar Post -->
+										</div>
+										<!-- Top Stories Slider Item -->
+										<div class="owl-item">
+
+											<!-- Sidebar Post -->
+											 {% for post in posts %}
+                                            {% if post.top == 1 %}
+											<div class="side_post">
+												<a href="post.html">
+													<div class="d-flex flex-row align-items-xl-center align-items-start justify-content-start">
+														<div class="side_post_image"><div><img src="{{ post.imageURL }}" alt=""></div></div>
+														<div class="side_post_content">
+															<div class="side_post_title">{{post.title}}</div>
+															<small class="post_meta">{{ post.author }} <span><a href="#" style="margin-left:10px;"><i class="fa fa-eye" ></i></a> {{post.views}} </span></small>
+														</div>
+													</div>
+												</a>
+											</div>
+                                            {% endif %}
+                                            {% endfor %}
+
+										</div>
+
+										<!-- Top Stories Slider Item -->
+										<div class="owl-item">
+
+											<!-- Sidebar Post -->
+											 {% for post in posts  %}
+                                            {% if post.top == 3 %}
+											<div class="side_post">
+												<a href="post.html">
+													<div class="d-flex flex-row align-items-xl-center align-items-start justify-content-start">
+														<div class="side_post_image"><div><img src="{{ post.imageURL }}" alt=""></div></div>
+														<div class="side_post_content">
+															<div class="side_post_title">{{post.title}}</div>
+															<small class="post_meta">{{ post.author }} <span> {{ post.date_posted | date:"H:i l, d.m.y" }}</span></small>
+														</div>
+													</div>
+												</a>
+											</div>
+                                            {% endif %}
+                                            {% endfor %}
+
+
+										</div>
+
+									</div>
+								</div>
+							</div>
+						</div>
+
+
+						<!-- Advertising 2 -->
+
+								<div class="sidebar_section_content">
+
+											<!-- Top Stories Slider -->
+											<div class="sidebar_slider_container">
+												{%  if user_profile is None %}
+							<article class="t-section media content-section">
+
+								<div class="row ">
+									<div class="col-12">
+										<div class="title">
+										<h5>Who to follow</h5>
+									</div>
+									</div>
+									<ul class="col-12 mt-2">
+										{% for user in all_user %}
+
+													<div class="owl-item">
+														<div class="side_post">
+															<a href="{% url 'user' user.user.username %}">
+																<div class="d-flex flex-row align-items-xl-center align-items-start justify-content-start">
+																	<div class="event_date d-flex flex-column align-items-center justify-content-center">
+																		<img class="rounded-circle mr-2" style="width: 50px; height: 50px;" src="{{ user.image.url }}">
+																	</div>
+																	<div class="side_post_content">
+																		<div class="side_post_title">{{ user.user.username }}</div>
+																		<small class="post_meta">{{ user.followers }} Followers<span> {{ user.following }} Following</span></small>
+																		<small class="post_meta">{{ user.likes }} Likes<span> {{ user.comments }} Comments</span></small>
+																	</div>
+																</div>
+															</a>
+														</div>
+													</div>
+										<br>
+										{% endfor %}
+									</ul>
+
+								</div>
+
+							</article>
+							{% endif %}
+												</div></div>
+
+
+						<!-- Future Events -->
+                        <div class="sidebar_section future_events">
+							<div class="sidebar_title_container">
+								<div class="sidebar_title">Future Events</div>
+								<div class="sidebar_slider_nav">
+									<div class="custom_nav_container sidebar_slider_nav_container">
+										<div class="custom_prev custom_prev_events">
+											<svg version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
+												 width="7px" height="12px" viewBox="0 0 7 12" enable-background="new 0 0 7 12" xml:space="preserve">
+												<polyline fill="#bebebe" points="0,5.61 5.609,0 7,0 7,1.438 2.438,6 7,10.563 7,12 5.609,12 -0.002,6.39 "/>
+											</svg>
+										</div>
+								        <ul id="custom_dots" class="custom_dots custom_dots_events">
+											<li class="custom_dot custom_dot_events active"><span></span></li>
+											<li class="custom_dot custom_dot_events"><span></span></li>
+											<li class="custom_dot custom_dot_events"><span></span></li>
+										</ul>
+										<div class="custom_next custom_next_events">
+											<svg version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
+												 width="7px" height="12px" viewBox="0 0 7 12" enable-background="new 0 0 7 12" xml:space="preserve">
+												<polyline fill="#bebebe" points="6.998,6.39 1.389,12 -0.002,12 -0.002,10.562 4.561,6 -0.002,1.438 -0.002,0 1.389,0 7,5.61 "/>
+											</svg>
+										</div>
+									</div>
+								</div>
+							</div>
+							<div class="sidebar_section_content">
+
+								<!-- Sidebar Slider -->
+								<div class="sidebar_slider_container">
+									<div class="owl-carousel owl-theme sidebar_slider_events">
+
+										<!-- Future Events Slider Item -->
+										<div class="owl-item">
+
+											<!-- Future Events Post -->
+
+
+											<!-- Future Events Post -->
+											<div class="side_post">
+												<a href="post.html">
+													<div class="d-flex flex-row align-items-xl-center align-items-start justify-content-start">
+														<div class="event_date d-flex flex-column align-items-center justify-content-center">
+															<div class="event_day">27</div>
+															<div class="event_month">apr</div>
+														</div>
+														<div class="side_post_content">
+															<div class="side_post_title">How Did van Gogh’s Turbulent Mind</div>
+															<small class="post_meta">Katy Liu<span>Sep 29</span></small>
+														</div>
+													</div>
+												</a>
+											</div>
+										</div>
+
+										<!-- Future Events Slider Item -->
+										<div class="owl-item">
+											<!-- Future Events Post -->
+											<div class="side_post">
+												<a href="post.html">
+													<div class="d-flex flex-row align-items-xl-center align-items-start justify-content-start">
+														<div class="event_date d-flex flex-column align-items-center justify-content-center">
+															<div class="event_day">02</div>
+															<div class="event_month">may</div>
+														</div>
+														<div class="side_post_content">
+															<div class="side_post_title">How Did van Gogh’s Turbulent Mind</div>
+															<small class="post_meta">Katy Liu<span>Sep 29</span></small>
+														</div>
+													</div>
+												</a>
+											</div>
+											<!-- Future Events Post -->
+
+										</div>
+										<!-- Future Events Slider Item -->
+										<div class="owl-item">
+											<!-- Future Events Post -->
+											<div class="side_post">
+												<a href="post.html">
+													<div class="d-flex flex-row align-items-xl-center align-items-start justify-content-start">
+														<div class="event_date d-flex flex-column align-items-center justify-content-center">
+															<div class="event_day">02</div>
+															<div class="event_month">may</div>
+														</div>
+														<div class="side_post_content">
+															<div class="side_post_title">How Did van Gogh’s Turbulent Mind</div>
+															<small class="post_meta">Katy Liu<span>Sep 29</span></small>
+														</div>
+													</div>
+												</a>
+											</div>
+
+											<!-- Future Events Post -->
+
+
+										</div>
+
+									</div>
+								</div>
+							</div>
+						</div>
+
+
+
+                        <!-- Widget Area -->
+                        <div class="sidebar-widget-area">
+                            <h5 class="title">Stay Connected</h5>
+                            <div class="widget-content">
+                                <div class="social-area d-flex justify-content-between">
+                                    <a href="#"><i class="fa fa-facebook"></i></a>
+                                    <a href="#"><i class="fa fa-twitter"></i></a>
+                                    <a href="#"><i class="fa fa-pinterest"></i></a>
+                                    <a href="#"><i class="fa fa-vimeo"></i></a>
+                                    <a href="#"><i class="fa fa-instagram"></i></a>
+                                    <a href="#"><i class="fa fa-google"></i></a>
+                                </div>
+                            </div>
+                        </div>
+                        <!-- Widget Area -->
+
+
+
+                    </div>
+                </div>
+            </div>
+		</div>
+	</div>
+
+
+            {% endblock content %}

@@ -1,0 +1,133 @@
+.toppar{
+    background-color: #a300cc;
+    color: #fff;
+    display: inline-block;
+    padding: 3px 10px;
+    line-height: 18px;
+    position: relative;
+    top: -1px;
+}
+.post-img-first img{
+    height:500px;
+    }
+    .post-img-height{
+    height:500px;
+    }
+
+.toppar a{
+color:#fff;}
+
+ .topbar-sign-in  {
+    content: '';
+    width: 1.5px;
+    top: 50%;
+    margin-top: -8px;
+    height: 18px;
+    display: inline-block;
+    background: #dadada;
+    background: rgba(0,0,0,.15);
+    position: absolute;
+    right: -5px;
+}
+.nav-link a :hover{
+    color:#fff;
+}
+.tit a{
+    margin-bottom: 0;
+    font-size: 21px;
+    font-weight: 700;
+    color: #fff;
+
+text-align: inherit;
+text-transform: capitalize;
+    }
+
+.tit_author{
+    font-weight: 400;
+    font-size: 14px;
+    text-transform: uppercase;
+    font-style: normal;
+    margin-right: 8px;
+    max-width: 110px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    display: inline-block;
+    vertical-align: top;
+}
+.tit_date{
+    font-weight: 400;
+    font-size: 12px;
+    text-transform: none;
+    color: #adb5bd;
+}
+
+@media only screen and (max-width: 568px)  {
+  .tit a {
+        font-size: 16px;
+        font-weight: 400;
+        line-height: 5px;
+
+     } }
+
+@media only screen and (max-width: 960px)  {
+  .like_under{
+   display:none;
+   } }
+
+@media only screen and (max-width: 700px)  {
+   .desktop_banner{
+   display:none;}
+   .search_margin{
+   margin-top:-18px;
+   }
+   #close-icon{
+   margin-top:-10px;
+   }
+   .footer-single-widget{
+   margin-top:30px;
+   }
+   .footer-menu{
+   margin-top:-200px;}
+   }
+@media only screen and (max-width: 746px)  {
+    .first_chat{
+    display:none;
+    }
+    .second_chat{
+    margin:20px;
+    }
+    .post-img-first img{
+    height:250px;
+    }
+    .post-img-height{
+    height:250px;
+    }
+}
+
+@media only screen and (min-width: 700px)  {
+   .mobile_banner{
+   display:none;}
+      .main-content-wrapper{
+    margin-top:100px;
+    }
+
+    }
+    @media only screen and (min-width: 746px)  {
+    .second_chat{
+    display:none;
+    }
+    }
+@media only screen and (min-width: 960px)  {
+      .main-content-wrapper{
+    margin-top:0px;
+    }
+    .world-latest-articles{
+     margin-top:250px;}}
+
+ @media only screen and (min-width: 1060px)  {
+      .main-content-wrapper{
+    margin-top:0px;
+    }
+    .world-latest-articles{
+     margin-top:250px;}}

@@ -1,0 +1,373 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="description" content="">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <!-- The above 4 meta tags *must* come first in the head; any other head content must come *after* these tags -->
+
+    <!-- Title  -->
+    <title>World - Blog &amp; Magazine Template</title>
+
+    <!-- Favicon  -->
+    <link rel="icon" href="{% static 'img/core-img/favicon.ico' %}">
+
+    <!-- Style CSS -->
+    <link rel="stylesheet" href="{% static 'style.css' %}">
+
+<link rel="stylesheet" type="text/css" href="{% static 'plugins/OwlCarousel2-2.2.1/owl.carousel.css' %}">
+<link rel="stylesheet" type="text/css" href="{% static 'plugins/OwlCarousel2-2.2.1/owl.theme.default.css' %}">
+<link rel="stylesheet" type="text/css" href="{% static 'plugins/OwlCarousel2-2.2.1/animate.css' %}">
+<link rel="stylesheet" href="https://pro.fontawesome.com/releases/v5.11.2/css/all.css" integrity="sha384-zrnmn8R8KkWl12rAZFt4yKjxplaDaT7/EUkKm7AovijfrQItFWR7O/JJn4DAa/gx" crossorigin="anonymous">
+    <link rel="stylesheet" href="{% static 'css/font-awesome.min.css' %}">
+<link rel="stylesheet" type="text/css" href="{% static 'css/main_styles.css' %}">
+<link rel="stylesheet" type="text/css" href="{% static 'css/2nd_styles.css' %}">
+
+
+</head>
+
+<body>
+    <!-- Preloader Start -->
+
+    <!-- Preloader End -->
+
+    <!-- ***** Header Area Start ***** -->
+
+
+<section>
+    <div class="container">
+                    <div class="row" style="margin-top:10px;">
+                        <div class="col-4 ">
+                                <div class="toppar"><a href="#" id="demo"></a></div>
+                        </div>
+                        <script>
+                        var d = new Date();
+                        document.getElementById("demo").innerHTML = d.toDateString();
+                        </script>
+                        <!--<div class="col-4 ">
+                            <div class="social_media_links" style="display: inline-block;">
+                                 {% if user.is_authenticated %}
+                                <p style="display: inline-block;"><a class="nav-item nav-link" href="{% url 'user' user.username %}">{{user.username}}{{user.id}} Welcome Jay</a></p>
+                                <p style="display: inline-block;"><a class="nav-item nav-link" href="{% url 'profile' %}">Settings</a></p>
+                                <p style="display: inline-block;"><a class="nav-link" href="{% url 'logout' %}">Logout</a></p>
+                                {% else %}
+                                <p style="display: inline-block;"><a class="nav-link" href="{% url 'login' %}">Login</a></p>
+                                <p style="display: inline-block;"><a class="nav-link" href="{% url 'register-users' %}">Register</a></p>
+                                {% endif %}
+                            </div>
+                        </div>-->
+                        <div class="col-8">
+                            <div class="social_media_links" style="float:right;">
+                                <div style="float:left;">
+                                {% if user.is_authenticated %}
+                                    <a href="{% url 'user' user.username %}" >
+                                <i class="fa fa-user-circle"></i>
+                                    {{user.username}}
+                                </a>
+                                    <a class="topbar-sign-in"></a>
+                                    <a href="{% url 'logout' %}">Logout</a>
+                                    <a href="{% url 'profile' %}">Settings</a>
+                                <a class="topbar-sign-in"></a>
+                                    {% else %}
+
+                                <a href="{% url 'login' %}" >
+                                <i class="fa fa-user-circle"></i>
+                                    Sign In
+                                </a>
+                                <a href="{% url 'register-users' %}">Register</a>
+                                <a class="topbar-sign-in"></a>
+                                {% endif %}
+                            </div>
+                                <a href="" style="margin-left:8px;">
+                                    <i class="fa fa-linkedin"></i>
+                                </a>
+                                <a href=" " style="margin-left:8px;">
+                                    <i class="fa fa-whatsapp"></i>
+                                </a>
+                                <a href=" " style="margin-left:8px;">
+                                    <i class="fa fa-telegram"></i>
+                                </a>
+                                <a href=" " style="margin-left:8px;">
+                                    <i class="fa fa-telegram"></i>
+                                </a>
+                            </div>
+
+                    </div>
+                </div>
+    </div>
+</section>
+    <header class="header-area">
+        <div class="container">
+            <div class="row">
+
+                <div class="col-12">
+                    <nav class="navbar navbar-expand-lg" >
+                        <!-- Logo -->
+                        <a class="navbar-brand" href="/" ><img src="" alt="Logo"></a>
+                        <!-- Navbar Toggler -->
+                        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#worldNav" aria-controls="worldNav" aria-expanded="false" aria-label="Toggle navigation"><span class="navbar-toggler-icon" style="color:red;"></span></button>
+                        <!-- Navbar -->
+                        <div class="collapse navbar-collapse" id="worldNav">
+                            <ul class="navbar-nav ml-auto">
+                                {% if user.is_authenticated %}
+                                <li class="nav-item"><a class="nav-link" href="{% url 'post-create' %}">Create Tweet <span class="sr-only">(current)</span></a></li>
+                                {% endif %}
+                                {% for cat in category %}
+                                <li class="nav-item" style="display:inline-block;">
+                                    <a class="nav-link" href="{% url 'post-category' cat %}">{{cat}}</a>
+                                </li>
+                                {% endfor %}
+
+
+
+
+
+
+                            </ul>
+                            <!-- Search Form  -->
+                             <!--<div id="search-wrapper" style="float:right">
+                                <form action="{% url 'search' %}" method="post">{% csrf_token %}
+                                    <input required name="search" type="text" id="search" placeholder="Search something...">
+                                    <div id="close-icon"></div>
+                                    <input class="d-none" type="submit" value="">
+                                </form>
+                            </div>-->
+                        </div>
+                    </nav>
+                </div>
+            </div>
+        </div>
+    </header>
+    <!-- ***** Header Area End ***** -->
+<style>
+
+    .post.post-thumb .post-body {
+    position: absolute;
+    margin: 0px;
+    padding: 0px 5%;
+    z-index: 20;
+    bottom: 15%;
+    color:#fff;
+    line-height:1.0;
+    background-color: transparent;
+}
+.hot-post .post {
+    margin-bottom: 0px;
+}
+.post {
+    position: relative;
+    margin-bottom: 30px;
+}
+.post .post-img {
+    display: block;
+    overflow: hidden;
+}
+.post-img > img {
+    width: 100%;
+    -webkit-transition: 1.6s -webkit-transform;
+    transition: 1.6s -webkit-transform;
+    transition: 1.6s transform;
+    transition: 1.6s transform, 1.6s -webkit-transform;
+}
+img {
+    vertical-align: middle;
+}
+
+</style>
+
+
+
+
+
+{% block content %}{% endblock %}
+    <div class="main-content-wrapper section-padding-100">
+        <div class="container">
+
+            <div class="row justify-content-center">
+                <!-- ========== Single Blog Post ========== -->
+                <div class="col-12 col-md-6 col-lg-4">
+                    <div class="single-blog-post post-style-3 mt-50 wow fadeInUpBig" data-wow-delay="0.2s">
+                        <!-- Post Thumbnail -->
+                        <div class="post-thumbnail">
+                            <img src="{% static 'img/blog-img/b4.jpg' %}" alt="">
+                            <!-- Post Content -->
+                            <div class="post-content d-flex align-items-center justify-content-between">
+                                <!-- Catagory -->
+                                <div class="post-tag"><a href="#">travel</a></div>
+                                <!-- Headline -->
+                                <a href="#" class="headline">
+                                    <h5>How Did van Gogh’s Turbulent Mind Depict One of the Most Complex Concepts in Physics?</h5>
+                                </a>
+                                <!-- Post Meta -->
+                                <div class="post-meta">
+                                    <p><a href="#" class="post-author">Katy Liu</a> on <a href="#" class="post-date">Sep 29, 2017 at 9:48 am</a></p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <!-- ========== Single Blog Post ========== -->
+                <div class="col-12 col-md-6 col-lg-4">
+                    <div class="single-blog-post post-style-3 mt-50 wow fadeInUpBig" data-wow-delay="0.4s">
+                        <!-- Post Thumbnail -->
+                        <div class="post-thumbnail">
+                            <img src="{% static 'img/blog-img/b5.jpg' %}" alt="">
+                            <!-- Post Content -->
+                            <div class="post-content d-flex align-items-center justify-content-between">
+                                <!-- Catagory -->
+                                <div class="post-tag"><a href="#">travel</a></div>
+                                <!-- Headline -->
+                                <a href="#" class="headline">
+                                    <h5>How Did van Gogh’s Turbulent Mind Depict One of the Most Complex Concepts in Physics?</h5>
+                                </a>
+                                <!-- Post Meta -->
+                                <div class="post-meta">
+                                    <p><a href="#" class="post-author">Katy Liu</a> on <a href="#" class="post-date">Sep 29, 2017 at 9:48 am</a></p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <!-- ========== Single Blog Post ========== -->
+                <div class="col-12 col-md-6 col-lg-4">
+                    <div class="single-blog-post post-style-3 mt-50 wow fadeInUpBig" data-wow-delay="0.6s">
+                        <!-- Post Thumbnail -->
+                        <div class="post-thumbnail">
+                            <img src="{% static 'img/blog-img/b6.jpg' %}" alt="">
+                            <!-- Post Content -->
+                            <div class="post-content d-flex align-items-center justify-content-between">
+                                <!-- Catagory -->
+                                <div class="post-tag"><a href="#">travel</a></div>
+                                <!-- Headline -->
+                                <a href="#" class="headline">
+                                    <h5>How Did van Gogh’s Turbulent Mind Depict One of the Most Complex Concepts in Physics?</h5>
+                                </a>
+                                <!-- Post Meta -->
+                                <div class="post-meta">
+                                    <p><a href="#" class="post-author">Katy Liu</a> on <a href="#" class="post-date">Sep 29, 2017 at 9:48 am</a></p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+
+
+            <!-- Load More btn -->
+
+    <!-- ***** Footer Area Start ***** -->
+    <footer class="footer-area">
+        <div class="container">
+            <div class="row">
+                <div class="col-12 col-md-4">
+                    <div class="footer-single-widget">
+                        <a href="#"><img src="{% static 'img/core-img/logo.png' %}" alt=""></a>
+
+
+                    </div>
+                    <br>
+                    <br>
+                    <div class="footer-single-widget">
+                        <div class="footer-single-widget">
+                        <h5>Search</h5>
+                        <form action="{% url 'search' %}" method="post">{% csrf_token %}
+                            <input required name="search"  type="text" id="search" placeholder="Search something...">
+                            <button type="button"><i class="fa fa-arrow-right"></i></button>
+                        </form>
+                    </div>
+                    </div>
+
+                </div>
+
+                <div class="col-12 col-md-4">
+					<div class="footer-single-widget">
+						<h5 class="">Tags</h5>
+						<div class="tags-widget">
+                            <style>
+                            ul, ol {
+                                    margin: 0;
+                                    padding: 0;
+                                    list-style: none;
+                                }
+                                .tags-widget ul li {
+                                        display: inline-block;
+                                        margin-right: 4px;
+                                        margin-bottom: 6px;
+                                    }
+                                    .tags-widget ul li a {
+                                        text-transform: uppercase;
+                                        display: block;
+                                        padding: 10px 15px;
+                                        font-size: 12px;
+                                        font-weight: 700;
+                                        color: #97989b;
+                                        background-color: #323335;
+                                        border-radius: 2px;
+                                        -webkit-transition: 0.2s all;
+                                        transition: 0.2s all;
+                                    }
+                                    .tags-widget ul li :hover {
+                                        color:#a300cc;
+                                    }
+                            </style>
+							<ul>
+								 {% for cat in category %}
+                                    <li><a href="{% url 'post-category' cat %}">{{cat}}</a></li>
+                                {% endfor %}
+
+							</ul>
+						</div>
+					</div>
+				</div>
+                <div class="col-12 col-md-4">
+                    <div class="footer-single-widget">
+                        <h5>Subscribe</h5>
+                        <form action="#" method="post">
+                            <input type="email" name="email" id="email" placeholder="Enter your mail">
+                            <button type="button"><i class="fa fa-arrow-right"></i></button>
+                        </form>
+                    </div>
+                    <br>
+                    <br>
+                    <div class="footer-single-widget">
+                        <h5>Useful Links</h5>
+                        <ul class="footer-menu d-flex justify-content-between">
+                            <li><a href="#">Contact Us</a></li>
+                            <li><a href="#">Advertisements</a></li>
+
+                        </ul><ul class="footer-menu d-flex justify-content-between">
+                        <li><a href="#">Privacy Policy</a></li>
+                            <li><a href="#">Disclaimer</a></li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </footer>
+    <!-- ***** Footer Area End ***** -->
+
+    <!-- jQuery (Necessary for All JavaScript Plugins) -->
+    <script src="{% static 'js/jquery/jquery-2.2.4.min.js' %}"></script>
+    <!-- Popper js -->
+    <script src="{% static 'js/popper.min.js' %}"></script>
+    <!-- Bootstrap js -->
+    <script src="{% static 'js/bootstrap.min.js' %}"></script>
+    <!-- Plugins js -->
+    <script src="{% static 'js/plugins.js' %}"></script>
+    <!-- Active js -->
+    <script src="{% static 'js/active.js' %}"></script>
+<script src="{% static 'plugins/OwlCarousel2-2.2.1/owl.carousel.js' %}"></script>
+<script src="{% static 'plugins/jquery.mb.YTPlayer-3.1.12/jquery.mb.YTPlayer.js' %}"></script>
+<script src="{% static 'plugins/easing/easing.js' %}"></script>
+<script src="{% static 'js/custom.js' %}"></script>
+
+</body>
+
+</html>
