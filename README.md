@@ -1,4 +1,4 @@
-# Django Twitter Clone by Redian Marku
+# Django Blog By Ucbi_Nation
 
 Fully functional Django App that looks ecxatly like real Twitter.
 
@@ -7,9 +7,9 @@ Demo Image:
 
 ## Setup
 
-1. Git Clone the project with: ```git clone https://github.com/redianmarku/Django-Twitter-Clone.git```.
+1. Git Clone the project with: ```git clone https://github.com/Ucbi-Nation/blog.git```.
 
-2. Move to the base directory: ```cd Django-Twitter-Clone```
+2. Move to the base directory: ```cd blog```
 
 3. Create a new python enveronment with: ```python -m venv env```.
 
@@ -22,7 +22,6 @@ Demo Image:
 7. Run app localy with: ```python manage.py runserver```.
 
 ## Certificate
-This project is officialy certified by Redian Marku.
+This project is officialy certified by Ucbi-Nation.
 All rights reserved 2020.
 
-Please Subscribe my YouTube Channel: <a href="https://www.youtube.com/channel/UCO5WiowKFnEw17AOk008WOQ" target="_blank">Ready Dev</a>.
